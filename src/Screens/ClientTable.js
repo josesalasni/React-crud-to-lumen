@@ -98,9 +98,8 @@ function ShowData() {
     getClient();
   },[getClient]);
 
-
   if (loading) return 'Loading...';
-  if (error) return `Error! ${error.message}`;
+  if (error) return ` ${error}`;
 
   return (
     <div>

@@ -1,6 +1,13 @@
 import { Form, Input, Button, Checkbox, Row, Col } from 'antd';
 
+
+import React, { useState,useEffect } from 'react';
+import { useMutation, gql } from '@apollo/client';
+import { useHistory } from "react-router-dom";
+
 import "./Styles/LoginScreen.css";
+
+
 
 const layout = {
   labelCol: { span: 8 },
@@ -10,25 +17,41 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 
-/*
-const EXCHANGE_RATES = gql`
-  query GetExchangeRates {
-    rates(currency: "USD") {
-      currency
-      rate
+
+const LoginUser = gql`
+  mutation loginUser($email: String!, $password: String!  ) {
+    loginUser(email: $email, password: $password ) {
+      token
     }
   }
 `;
-*/
 
-const LoginScreen = () => {
+const LoginScreen = (props) => {
+
+  let history = useHistory();
+
+  const [loginUser, { data }] = useMutation(LoginUser , {
+    onCompleted(data) {
+      completedLogin(data)
+      history.push("/clients");
+    } 
+  });
+
   const onFinish = (values) => {
+
+    loginUser({ variables: { email: values.email , password: values.password } } ) ;
+
+
     console.log('Success:', values);
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+
+  function completedLogin(data){
+    localStorage.setItem('token',  data.loginUser.token );
+  }
 
   return (
       
@@ -51,7 +74,7 @@ const LoginScreen = () => {
                 >
                 <Form.Item
                     label="Username"
-                    name="username"
+                    name="email"
                     rules={[{ required: true, message: 'Please input your username!' }]}
                 >
                     <Input />
