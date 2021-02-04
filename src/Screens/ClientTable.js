@@ -59,9 +59,8 @@ function ShowData() {
               okText="Si"
               cancelText="No"
             >
-              <a href="#"> Borrar
               
-              </a>
+              <Button type="primary"> Borrar</Button>
           </Popconfirm>
 
           <UpdateClientModal updatedClient={() => refetch() } clientSelected={record} > </UpdateClientModal>

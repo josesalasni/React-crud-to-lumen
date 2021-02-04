@@ -21,7 +21,7 @@ const UpdateClientModal = (props) => {
   const completedForm = () => {
     setIsModalVisible(false);
     form.resetFields();
-    message.success('Elemento insertado');
+    message.success('Elemento editado');
     props.updatedClient();
   }
 
